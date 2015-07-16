@@ -1,0 +1,35 @@
+{
+  "name": "creo",
+  "version": "1.0.0",
+  "description": "Homoiconic language with minimal syntax compiling to JavaScript",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "bin": {
+    "creo": "./src/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olical/creo.git"
+  },
+  "keywords": [
+    "language",
+    "lisp",
+    "homoiconic"
+  ],
+  "author": {
+    "name": "Oliver Caldwell",
+    "email": "olliec87@gmail.com",
+    "url": "http://oli.me.uk/"
+  },
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/Olical/creo/issues"
+  },
+  "homepage": "https://github.com/Olical/creo#readme",
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "standard": "^4.5.4"
+  }
+}
