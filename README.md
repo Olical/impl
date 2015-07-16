@@ -1,6 +1,8 @@
 # creo
 
-Homoiconic language with minimal syntax compiling to JavaScript. This is essentially a toy language right now that's supposed to be an exercise in language and basic compiler design. It's inspired by Clojure among other Lisps.
+Homoiconic language with minimal syntax compiling to JavaScript.
+
+This is essentially a toy language right now that's supposed to be an exercise in language and basic compiler design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by [ImmutableJS][].
 
 ## Syntax
 
@@ -60,3 +62,4 @@ Do what you want. Learn as much as you can. Unlicense more software.
 [unlicense]: http://unlicense.org/
 [author-site]: http://oli.me.uk/
 [author-twitter]: https://twitter.com/OliverCaldwell
+[immutablejs]: https://github.com/facebook/immutable-js

@@ -31,12 +31,19 @@
   "standard": {
     "global": [
       "describe",
-      "it"
+      "it",
+      "beforeEach",
+      "afterEach",
+      "before",
+      "after"
     ]
   },
   "devDependencies": {
     "mocha": "^2.2.5",
     "should": "^7.0.2",
     "standard": "^4.5.4"
+  },
+  "dependencies": {
+    "immutable": "^3.7.4"
   }
 }
