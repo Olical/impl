@@ -10,5 +10,9 @@ describe('read', function () {
     it('reads a string into a list', function () {
       read('"hi"').toJS().should.eql(['hi'])
     })
+
+    it('reads an addition call', function () {
+      read('+ 5 10').toJS().should.eql([Symbol('+'), 5, 10])
+    })
   })
 })
