@@ -1,4 +1,4 @@
-# [creo][]
+# [impl][]
 
  * Simple (seriously, KISS)
  * Homoiconic
@@ -77,5 +77,5 @@ fn short-names: people
  * Compiles to LLVM?
  * JIT?
 
-[creo]: https://github.com/Olical/creo
+[impl]: https://github.com/Olical/impl
 [clojs]: https://github.com/Olical/clojs

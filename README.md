@@ -1,4 +1,4 @@
-# creo
+# impl
 
 Homoiconic language with minimal syntax compiling to JavaScript.
 

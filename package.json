@@ -1,5 +1,5 @@
 {
-  "name": "creo",
+  "name": "impl",
   "version": "1.0.0",
   "description": "Homoiconic language with minimal syntax compiling to JavaScript",
   "main": "src/index.js",
@@ -7,11 +7,11 @@
     "test": "standard && mocha"
   },
   "bin": {
-    "creo": "./src/cli.js"
+    "impl": "./src/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Olical/creo.git"
+    "url": "git+https://github.com/Olical/impl.git"
   },
   "keywords": [
     "language",
@@ -25,9 +25,9 @@
   },
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/Olical/creo/issues"
+    "url": "https://github.com/Olical/impl/issues"
   },
-  "homepage": "https://github.com/Olical/creo#readme",
+  "homepage": "https://github.com/Olical/impl#readme",
   "standard": {
     "global": [
       "describe",
