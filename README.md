@@ -1,8 +1,18 @@
-# impl
+# impl [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
 Homoiconic language with minimal syntax compiling to JavaScript.
 
 This is essentially a toy language right now that's supposed to be an exercise in language and basic compiler design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by [ImmutableJS][].
+
+## Bootstrap
+
+```bash
+# Fetch the dependencies.
+npm install
+
+# Run the tests.
+npm test
+```
 
 ## Syntax
 
@@ -48,6 +58,14 @@ That's pretty much all of the syntax (so far). There's going to be a bunch of ma
 ## Author
 
 [Oliver Caldwell][author-site] ([@OliverCaldwell][author-twitter])
+
+## Why Impl?
+
+*Warning: Dubious reasons for this name will follow. My project just needed a name which sounded quite nice and was fairly unique.*
+
+ * There's *imp*lied *l*ists everywhere
+ * It's (s)impl(e)
+ * I wanted it to be similar to Lisp (*Lis*t *P*rocessing)
 
 ## Unlicenced
 
