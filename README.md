@@ -16,44 +16,45 @@ npm test
 
 ## Syntax
 
-Ever since I started playing with Lisps I have grown to love minimal syntax where I can define the language in terms of macros. I've tried to keep syntax as light as possible whilst creating all lists implicitly. Lists are determined by line breaks and indentation with a few little helpers to make some situations slightly more concise.
+The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (currently defined as two spaces).
 
-A child list is created when you increase the level of indentation. Right now two spaces is the expected indentation but indentation detection would be easy enough to add if required. A sibling list is created for every new line at the same indentation. A simple if statement can be represented as follows.
+There are three special characters that allow you to combine lines where it makes sense so you don't have to rely on new lines and indentation in every situation.
 
-```
-if some-bool
-  ;10
-  ;20
-```
+ * `:` - Start a child list until the end of the line.
+ * `;` - Break out of the current list.
+ * `,` - Equivalent to `;:`, break out and create a new sibling list until the end of the line.
 
-If `some-bool` is true, it will return 10, otherwise 20. This is as you'd expect from any Lisp, just without the parenthesis. The `;` (pops you out of the current list) is required because each line is implicitly wrapped in a List, this allows you to do things like this.
+When writing an `if` that makes a call to a function, for example, you can use these special characters to make it a little more concise.
 
-```
-if some-bool
-  + 10 20
-  - 10 20
+```impl
+if: some-fn "arg for some-fn"
+  val 10
+  +: fn-a, fn-b
 ```
 
-I think the trade off is worth it. It makes calling things easy and returning non-functions only a single character away. If you need to pass a list of functions around without executing the first one you can use the `list` function.
+`val` is used to create a function which returns it's first argument. This allows you to return actual values as leaf nodes of the list tree. Here's a Fibonacci function as another example.
 
-It's worth noting that using `;` to pop out of an empty list will discard the list entirely. Obviously if you wanted to execute a function in this if statement as the predicate it'd be a little cumbersome, for example.
-
-```
-if
-  some-func
-  ;"yep"
-  ;"nope"
-```
-
-That's why you can use `:` to create a sub-list up until the end of the line. You can also use `;` to close a list and `,` to close and then re-open a new list. Essentially creating a sibling.
-
-```
-if: some-func; "yep" "nope"
+```impl
+fn fib: n
+  if: < n 2
+    val 1
+    +
+      fib: - n 2
+      fib: - n 1
 ```
 
-This allows you to do everything you would usually do with line breaks and indentation, but all on one line explicitly. I only used the `;` for demonstration, you could have just left the return values on their new lines. You may notice that you don't need to escape the strings in this case too, that's because they're not on new lines.
+You could join the `fib` calls onto one line with `+ fib: - n 2;, fib: - n 1`, but keeping them on separate lines is far clearer. Here's one more example, this one takes a list of people, extracts their names and then filters out those longer than 10 characters.
 
-That's pretty much all of the syntax (so far). There's going to be a bunch of macros and functions as well as JavaScript interop that make up the rest of the language, but this gives you a rough idea of what I'm aiming for.
+```impl
+fn short-names: people
+  filter
+    map people
+      fn: person, get person "name"
+    fn: name
+      <: len name, 10
+```
+
+All lists are executed as in Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
 
 ## Author
 
