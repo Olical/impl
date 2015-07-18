@@ -65,7 +65,7 @@ All lists are executed as in Lisp, the first item is presumed to be a function. 
 *Warning: Dubious reasons for this name will follow. My project just needed a name which sounded quite nice and was fairly unique.*
 
  * There's **imp**lied **l**ists everywhere
- * It's (s)impl(e)
+ * It's s**impl**e
  * I wanted it to be similar to Lisp (**Lis**t **P**rocessing)
 
 ## Unlicenced
