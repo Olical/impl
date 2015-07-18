@@ -4,7 +4,7 @@
   "description": "Homoiconic language with minimal syntax compiling to JavaScript",
   "main": "src/index.js",
   "scripts": {
-    "test": "standard && mocha"
+    "test": "standard && tape ./test/**/*.js"
   },
   "bin": {
     "impl": "./src/cli.js"
@@ -28,20 +28,9 @@
     "url": "https://github.com/Olical/impl/issues"
   },
   "homepage": "https://github.com/Olical/impl#readme",
-  "standard": {
-    "global": [
-      "describe",
-      "it",
-      "beforeEach",
-      "afterEach",
-      "before",
-      "after"
-    ]
-  },
   "devDependencies": {
-    "mocha": "^2.2.5",
-    "should": "^7.0.2",
-    "standard": "^4.5.4"
+    "standard": "^4.5.4",
+    "tape": "^4.0.0"
   },
   "dependencies": {
     "immutable": "^3.7.4"
