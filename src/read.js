@@ -80,11 +80,11 @@ var readers = {
  * @param {String} finalCharacter
  */
 function readUntil (source, finalCharacter) {
-  var token = []
+  var token = Immutable.List()
   console.log(source.toJS(), finalCharacter)
 
   while (!source.isEmpty() && source.peek() !== finalCharacter) {
-    token.push(source.peek())
+    token = token.push(source.peek())
     source = source.pop()
   }
 
