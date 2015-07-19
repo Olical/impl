@@ -1,4 +1,4 @@
-// var Immutable = require('immutable')
+var Immutable = require('immutable')
 // var constants = require('./constants')
 
 /**
@@ -11,6 +11,8 @@ function read (source) {
   // Need to walk through the string here storing a stack of context depending
   // on what's currently at the top of the stack and what we can switch to from
   // that. Probably some sort of regular expression based state machine.
+
+  return Immutable.List()
 }
 
 module.exports = read
