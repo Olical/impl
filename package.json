@@ -4,7 +4,7 @@
   "description": "Homoiconic language with minimal syntax compiling to JavaScript",
   "main": "src/index.js",
   "scripts": {
-    "test": "standard && tape './test/**/*.js' | faucet"
+    "test": "standard; tape './test/**/*.js' | faucet"
   },
   "bin": {
     "impl": "./src/cli.js"

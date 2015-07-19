@@ -5,9 +5,15 @@ module.exports = {
       count: 2
     },
     delimiters: {
-      open: ':',
-      close: ';',
-      sibling: ','
+      openList: ':',
+      closeList: ';',
+      nextList: ',',
+      listItem: ' ',
+      string: '"'
+    },
+    tokens: {
+      symbol: /[\w-_!?+/*%]+/,
+      number: /\d+/
     }
   }
 }
