@@ -13,6 +13,12 @@ test('reading two strings', function (t) {
   t.deepEqual(out, ['Hello', 'World!'], 'a couple of strings')
 })
 
+test('escaping a quote inside a string', function (t) {
+  t.plan(1)
+  var out = impl.read('"Hello, \\"World!\\""').toJS()
+  t.deepEqual(out, ['Hello, "World!"'], 'just a string')
+})
+
 // test('reading symbols and numbers', function (t) {
 //   t.plan(1)
 //   var out = impl.read('+ 1.0 -20 6').toJS()

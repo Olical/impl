@@ -43,10 +43,10 @@ function read (source) {
 function selectReader (char) {
   if (char === config.escapeChar) {
     return readers.skip(2)
-  } else if (char === config.stringChar) {
-    return readers.string()
   } else if (char === config.itemDelimiterChar) {
     return readers.skip(1)
+  } else if (char === config.stringChar) {
+    return readers.string()
   } else {
     throw new Error(['Unknown character found when attempting to select a reader: "', char, '".'].join(''))
   }
@@ -68,14 +68,20 @@ var readers = {
       var shouldTake
 
       var str = _.takeWhile(source, function (char) {
-        shouldTake = char !== config.stringChar && prev !== config.escapeChar
+        shouldTake = char !== config.stringChar || prev === config.escapeChar
         prev = char
         return shouldTake
       })
 
+      var offset = str.length + 2
+
+      str = _.reject(str, function (char) {
+        return char === '\\'
+      })
+
       return {
         value: str.join(''),
-        cursor: cursor + str.length + 2
+        cursor: cursor + offset
       }
     }
   }
