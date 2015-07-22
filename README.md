@@ -4,14 +4,32 @@ Homoiconic language with minimal syntax compiling to JavaScript.
 
 This is essentially a toy language that's supposed to be an exercise in language design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
 
-## Bootstrap
+## Getting started
+
+### If you're working on Impl
 
 ```bash
 # Fetch the dependencies.
 npm install
 
-# Run the tests.
+# Run the tests, if you so wish.
 npm test
+```
+
+### If you're using Impl
+
+```
+# Install the module globally.
+npm install -g impl
+
+# Pipe an Impl file through the compiler.
+impl < fib.impl > fib.js
+
+# Execute the compiled JavaScript!
+node fib.js
+
+# Or even compile and execute in one command.
+impl < fib.impl | node
 ```
 
 ## Syntax
