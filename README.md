@@ -2,7 +2,7 @@
 
 Homoiconic language with minimal syntax compiling to JavaScript.
 
-This is essentially a toy language right now that's supposed to be an exercise in language and basic compiler design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by [ImmutableJS][].
+This is essentially a toy language that's supposed to be an exercise in language design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
 
 ## Bootstrap
 
@@ -18,11 +18,12 @@ npm test
 
 The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (currently defined as two spaces).
 
-There are three special characters that allow you to combine lines where it makes sense so you don't have to rely on new lines and indentation in every situation.
+There are four special characters that allow you override the implicit lists where it makes sense so you don't have to rely on new lines and indentation in every situation.
 
  * `:` - Start a child list until the end of the line.
  * `;` - Break out of the current list.
  * `,` - Equivalent to `;:`, break out and create a new sibling list until the end of the line.
+ * `\` - Escape the next character, even if it's a new line or one of the previous special characters. This causes the reader to skip the next character no matter what.
 
 When writing an `if` that makes a call to a function, for example, you can use these special characters to make it a little more concise.
 
@@ -43,7 +44,7 @@ fn fib: n
       fib: - n 1
 ```
 
-You could join the `fib` calls onto one line with `+ fib: - n 2;, fib: - n 1`, but keeping them on separate lines is far clearer. Here's one more example, this one takes a list of people, extracts their names and then filters out those longer than 10 characters.
+You could join the `fib` calls onto one line with `+: fib: - n 2;, fib: - n 1`, but keeping them on separate lines is far clearer. Here's one more example, this one takes a list of people, extracts their names and then filters out those longer than 10 characters.
 
 ```impl
 fn short-names: people
@@ -56,11 +57,15 @@ fn short-names: people
 
 All lists are executed as in Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
 
+## Integration
+
+I've created [vim-impl][] to provide some default buffer local settings and syntax detection / highlighting.
+
 ## Author
 
 [Oliver Caldwell][author-site] ([@OliverCaldwell][author-twitter])
 
-## Why Impl?
+## Why the name Impl?
 
 *Warning: Dubious reasons for this name will follow. My project just needed a name which sounded quite nice and was fairly unique.*
 
@@ -82,3 +87,4 @@ Do what you want. Learn as much as you can. Unlicense more software.
 [author-site]: http://oli.me.uk/
 [author-twitter]: https://twitter.com/OliverCaldwell
 [immutablejs]: https://github.com/facebook/immutable-js
+[vim-impl]: https://github.com/Olical/vim-impl
