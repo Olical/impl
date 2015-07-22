@@ -10,10 +10,13 @@ This is essentially a toy language that's supposed to be an exercise in language
 
 ```bash
 # Fetch the dependencies.
-npm install
+make bootstrap
 
 # Run the tests.
-npm test
+make test
+
+# Or run the tests continually.
+make test-watch
 ```
 
 ### If you're using Impl
