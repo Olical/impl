@@ -48,7 +48,7 @@ function selectReader (char) {
   } else if (char === config.stringChar) {
     return readers.string()
   } else {
-    throw new Error(['Unknown character found when attempting to select a reader: "', char, '".'].join(''))
+    return readers.infer()
   }
 }
 
@@ -81,6 +81,30 @@ var readers = {
 
       return {
         value: str.join(''),
+        cursor: cursor + offset
+      }
+    }
+  },
+  infer: function () {
+    return function (source, cursor) {
+      source = _.drop(source, cursor)
+      var prev
+      var shouldTake
+
+      var token = _.takeWhile(source, function (char) {
+        shouldTake = char !== config.stringChar || prev === config.escapeChar
+        prev = char
+        return shouldTake
+      })
+
+      var offset = token.length
+
+      token = _.reject(token, function (char) {
+        return char === '\\'
+      })
+
+      return {
+        value: token.join(''),
         cursor: cursor + offset
       }
     }

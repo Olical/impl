@@ -19,6 +19,11 @@ test('escaping a quote inside a string', function (t) {
   t.deepEqual(out, ['Hello, "World!"'], 'just a string')
 })
 
+// test('reading a symbol', function (t) {
+//   t.plan(1)
+//   var out = impl.read('test')
+// })
+
 // test('reading symbols and numbers', function (t) {
 //   t.plan(1)
 //   var out = impl.read('+ 1.0 -20 6').toJS()
