@@ -12,13 +12,13 @@ This is essentially a toy language that's supposed to be an exercise in language
 # Fetch the dependencies.
 npm install
 
-# Run the tests, if you so wish.
+# Run the tests.
 npm test
 ```
 
 ### If you're using Impl
 
-```
+```bash
 # Install the module globally.
 npm install -g impl
 
