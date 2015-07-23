@@ -22,7 +22,7 @@ make test-watch
 ### If you're using Impl
 
 ```bash
-# Install the module globally.
+# Install the package globally.
 npm install -g impl
 
 # Pipe an Impl file through the compiler.
@@ -76,7 +76,7 @@ fn short-names: people
       <: len name, 10
 ```
 
-All lists are executed as in Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
+All lists are executed like Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
 
 ## Integration
 
