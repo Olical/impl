@@ -1,114 +1,101 @@
-var _ = require('lodash')
 var Immutable = require('immutable')
-// var Symbol = require('./Symbol')
+var Symbol = require('./Symbol')
 
-var config = {
-  escapeChar: '\\',
-  itemDelimiterChar: ' ',
-  stringChar: '"'
+/**
+ * A set of regular expressions to delimit or signify different things.
+ *
+ * @type {Object}
+ */
+var matchers = {
+  escape: /\\/,
+  space: /\s/,
+  string: /"/,
+  closeList: /;/,
+  openList: /:/,
+  nextList: /,/,
+  number: /[+-]?\.?\d+\.?\d*/
 }
 
 /**
- * Reads a Impl source string into it's equivalent data structures.
+ * Reads a source string into it's equivalent data structures.
  *
  * @param {String} source
  * @return {Immutable.List}
  */
 function read (source) {
-  var cursor = 0
-  var sourceLength = source.length
-  var result = Immutable.List()
-  var readerResult
+  var head
+  var state = Immutable.fromJS({
+    result: [],
+    source: source.split('')
+  })
 
-  while (cursor < sourceLength) {
-    readerResult = selectReader(source[cursor])(source, cursor)
-    cursor = readerResult.cursor
+  while ((source = state.get('source')) && !source.isEmpty()) {
+    head = source.first()
 
-    if (readerResult.value !== null) {
-      result = result.push(readerResult.value)
+    if (head.match(matchers.string)) {
+      state = shift(readUntil(shift(state), matchers.string))
+    } else if (head.match(matchers.space)) {
+      state = shift(state)
+    } else {
+      state = readUntil(state, matchers.space, function (value) {
+        if (value.match(matchers.number)) {
+          return parseFloat(value)
+        } else {
+          return new Symbol(value)
+        }
+      })
     }
   }
 
-  return result
+  return state.get('result')
 }
 
 /**
- * Fetches a reader function for the given character. The reader function
- * requires the source and cursor position, it returns an object containing the
- * read value and the new cursor position.
+ * Drops the first item from the source within the state.
  *
- * @param {String} char
- * @return {Function}
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
  */
-function selectReader (char) {
-  if (char === config.escapeChar) {
-    return readers.skip(2)
-  } else if (char === config.itemDelimiterChar) {
-    return readers.skip(1)
-  } else if (char === config.stringChar) {
-    return readers.string()
-  } else {
-    return readers.infer()
-  }
+function shift (state) {
+  return state.set('source', state.get('source').shift())
 }
 
-var readers = {
-  skip: function (n) {
-    return function (source, cursor) {
-      return {
-        value: null,
-        cursor: cursor + n
-      }
-    }
-  },
-  string: function () {
-    return function (source, cursor) {
-      source = _.drop(source, cursor + 1)
-      var prev
-      var shouldTake
+/**
+ * Reads a value until the regular expression is matched. It then runs the
+ * string through the optional mapping function and pushes it into the result.
+ *
+ * @param {Immutable.Map} state
+ * @param {RegExp} matcher
+ * @param {Function} mapper
+ * @return {Immutable.Map}
+ */
+function readUntil (state, matcher, mapper) {
+  var head
+  var result = ''
+  var source = state.get('source')
 
-      var str = _.takeWhile(source, function (char) {
-        shouldTake = char !== config.stringChar || prev === config.escapeChar
-        prev = char
-        return shouldTake
-      })
-
-      var offset = str.length + 2
-
-      str = _.reject(str, function (char) {
-        return char === '\\'
-      })
-
-      return {
-        value: str.join(''),
-        cursor: cursor + offset
-      }
-    }
-  },
-  infer: function () {
-    return function (source, cursor) {
-      source = _.drop(source, cursor)
-      var prev
-      var shouldTake
-
-      var token = _.takeWhile(source, function (char) {
-        shouldTake = char !== config.stringChar || prev === config.escapeChar
-        prev = char
-        return shouldTake
-      })
-
-      var offset = token.length
-
-      token = _.reject(token, function (char) {
-        return char === '\\'
-      })
-
-      return {
-        value: token.join(''),
-        cursor: cursor + offset
-      }
-    }
+  function shouldContinue () {
+    head = source.first()
+    return !source.isEmpty() && !head.match(matcher)
   }
+
+  while (shouldContinue()) {
+    if (head.match(matchers.escape)) {
+      source = source.shift()
+    }
+
+    result += head
+    source = source.shift()
+  }
+
+  if (typeof mapper === 'function') {
+    result = mapper(result)
+  }
+
+  return state.withMutations(function (state) {
+    state.set('source', source)
+    state.set('result', state.get('result').push(result))
+  })
 }
 
 module.exports = read
