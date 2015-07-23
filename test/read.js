@@ -19,19 +19,26 @@ test('escaping a quote inside a string', function (t) {
   t.deepEqual(out, ['Hello, "World!"'], 'just a string')
 })
 
-// test('reading a symbol', function (t) {
-//   t.plan(1)
-//   var out = impl.read('test')
-// })
+test('reading a symbol', function (t) {
+  t.plan(1)
+  var out = impl.read('test')
+  t.deepEqual(out, [new impl.Symbol('test')])
+})
 
-// test('reading symbols and numbers', function (t) {
-//   t.plan(1)
-//   var out = impl.read('+ 1.0 -20 6').toJS()
-//   t.deepEqual(out, [new impl.Symbol('+'), 1.0, -20, 6], '"+" symbol with various numbers')
-// })
+test('reading a number', function (t) {
+  t.plan(1)
+  var out = impl.read('-2.34')
+  t.deepEqual(out, [-2.34])
+})
 
-// test('reading symbol and string', function (t) {
-//   t.plan(1)
-//   var out = impl.read('split "Hello, World!"').toJS()
-//   t.deepEqual(out, [new impl.Symbol('split'), 'Hello, World!'], '"split" symbol with a string')
-// })
+test('reading symbols and numbers', function (t) {
+  t.plan(1)
+  var out = impl.read('+ 1.0 -20 6').toJS()
+  t.deepEqual(out, [new impl.Symbol('+'), 1.0, -20, 6], '"+" symbol with various numbers')
+})
+
+test('reading symbol and string', function (t) {
+  t.plan(1)
+  var out = impl.read('split "Hello, World!"').toJS()
+  t.deepEqual(out, [new impl.Symbol('split'), 'Hello, World!'], '"split" symbol with a string')
+})
