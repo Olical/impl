@@ -8,10 +8,13 @@ var Symbol = require('./Symbol')
  */
 var matchers = {
   escape: /\\/,
-  itemDelimiter: /[\s\n]/,
+  itemDelimiter: /[ \n]/,
   string: /"/,
   closeList: /;/,
-  openList: /:/,
+  openList: /\n/,
+  indentation: / {2}/,
+  notIndentation: /[^\s]/,
+  openInlineList: /:/,
   nextList: /,/,
   number: /[+-]?\.?\d+\.?\d*/
 }
@@ -35,6 +38,8 @@ function read (source) {
 
     if (head.match(matchers.string)) {
       state = shift(readUntil(shift(state), matchers.string))
+    } else if (head.match(matchers.openList)) {
+      state = incrementFinalPathItem(shift(state))
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
@@ -49,6 +54,18 @@ function read (source) {
   }
 
   return state.get('result')
+}
+
+/**
+ * Used to create a sibling list.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function incrementFinalPathItem (state) {
+  var lastItem = ['path', -1]
+  var index = state.getIn(lastItem) + 1
+  return state.setIn(lastItem, index)
 }
 
 /**

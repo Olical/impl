@@ -61,3 +61,12 @@ test('new line closes a symbol', function (t) {
   var out = readFirst('new-line?\n')
   t.deepEqual(out, [symbol('new-line?')], 'symbol, no new line')
 })
+
+test('new line creates a new list', function (t) {
+  t.plan(1)
+  var out = read('foo 10\nbar 20')
+  t.deepEqual(out, [
+    [symbol('foo'), 10],
+    [symbol('bar'), 20]
+  ], 'two lists each with two values')
+})
