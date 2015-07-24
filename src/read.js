@@ -8,7 +8,7 @@ var Symbol = require('./Symbol')
  */
 var matchers = {
   escape: /\\/,
-  space: /\s/,
+  itemDelimiter: /[\s\n]/,
   string: /"/,
   closeList: /;/,
   openList: /:/,
@@ -35,10 +35,10 @@ function read (source) {
 
     if (head.match(matchers.string)) {
       state = shift(readUntil(shift(state), matchers.string))
-    } else if (head.match(matchers.space)) {
+    } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
-      state = readUntil(state, matchers.space, function (value) {
+      state = readUntil(state, matchers.itemDelimiter, function (value) {
         if (value.match(matchers.number)) {
           return parseFloat(value)
         } else {

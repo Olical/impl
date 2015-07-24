@@ -9,6 +9,10 @@ function readFirst (src) {
   return read(src)[0]
 }
 
+function symbol (value) {
+  return new impl.Symbol(value)
+}
+
 test('reading a string', function (t) {
   t.plan(1)
   var out = readFirst('"Hello, World!"')
@@ -30,7 +34,7 @@ test('escaping a quote inside a string', function (t) {
 test('reading a symbol', function (t) {
   t.plan(1)
   var out = readFirst('test')
-  t.deepEqual(out, [new impl.Symbol('test')], 'just the symbol test')
+  t.deepEqual(out, [symbol('test')], 'just the symbol test')
 })
 
 test('reading numbers', function (t) {
@@ -43,11 +47,17 @@ test('reading numbers', function (t) {
 test('reading symbols and numbers', function (t) {
   t.plan(1)
   var out = readFirst('+ 1.0 -20 6')
-  t.deepEqual(out, [new impl.Symbol('+'), 1.0, -20, 6], '"+" symbol with various numbers')
+  t.deepEqual(out, [symbol('+'), 1.0, -20, 6], '"+" symbol with various numbers')
 })
 
 test('reading symbol and string', function (t) {
   t.plan(1)
   var out = readFirst('split "Hello, World!"')
-  t.deepEqual(out, [new impl.Symbol('split'), 'Hello, World!'], '"split" symbol with a string')
+  t.deepEqual(out, [symbol('split'), 'Hello, World!'], '"split" symbol with a string')
+})
+
+test('new line closes a symbol', function (t) {
+  t.plan(1)
+  var out = readFirst('new-line?\n')
+  t.deepEqual(out, [symbol('new-line?')], 'symbol, no new line')
 })
