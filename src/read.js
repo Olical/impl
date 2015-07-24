@@ -26,7 +26,8 @@ function read (source) {
   var head
   var state = Immutable.fromJS({
     result: [],
-    source: source.split('')
+    source: source.split(''),
+    path: [0]
   })
 
   while ((source = state.get('source')) && !source.isEmpty()) {
@@ -74,6 +75,7 @@ function readUntil (state, matcher, mapper) {
   var result
   var accumulator = Immutable.List()
   var source = state.get('source')
+  var path = ['result'].concat(state.get('path').toJS())
 
   function shouldContinue () {
     head = source.first()
@@ -98,7 +100,8 @@ function readUntil (state, matcher, mapper) {
 
   return state.withMutations(function (state) {
     state.set('source', source)
-    state.set('result', state.get('result').push(result))
+    var current = state.getIn(path) || Immutable.List()
+    state.setIn(path, current.push(result))
   })
 }
 
