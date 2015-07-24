@@ -71,7 +71,8 @@ function shift (state) {
  */
 function readUntil (state, matcher, mapper) {
   var head
-  var result = ''
+  var result
+  var accumulator = Immutable.List()
   var source = state.get('source')
 
   function shouldContinue () {
@@ -84,9 +85,11 @@ function readUntil (state, matcher, mapper) {
       source = source.shift()
     }
 
-    result += head
+    accumulator = accumulator.push(head)
     source = source.shift()
   }
+
+  result = accumulator.join('')
 
   if (typeof mapper === 'function') {
     result = mapper(result)
