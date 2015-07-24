@@ -83,6 +83,7 @@ function readUntil (state, matcher, mapper) {
   while (shouldContinue()) {
     if (head.match(matchers.escape)) {
       source = source.shift()
+      head = source.first()
     }
 
     accumulator = accumulator.push(head)
