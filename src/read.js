@@ -81,12 +81,9 @@ function updatePathUsingIndentation (state) {
   if (previousDepth === nextDepth) {
     return incrementFinalPathItem(state)
   } else if (previousDepth < nextDepth) {
-    var path = state.get('path')
-    var nextSegment = state.getIn(path.unshift('result')).size
-    return state.set('path', state.get('path').push(nextSegment))
+    return insertChildPathSegement(state)
   } else if (previousDepth > nextDepth) {
-    var popped = state.set('path', state.get('path').pop())
-    return incrementFinalPathItem(popped)
+    return popPathSegement(state)
   }
 }
 
@@ -112,6 +109,30 @@ function incrementFinalPathItem (state) {
   var lastItem = Immutable.List(['path', -1])
   var index = state.getIn(lastItem) + 1
   return state.setIn(lastItem, index)
+}
+
+/**
+ * Inserts a new path segment as a child.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function insertChildPathSegement (state) {
+  var path = state.get('path')
+  var nextSegment = state.getIn(path.unshift('result')).size
+  return state.set('path', state.get('path').push(nextSegment))
+}
+
+/**
+ * Pops the final path segment off and increments the last segment. This
+ * produces a sibling of the original parent.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function popPathSegement (state) {
+  var popped = state.set('path', state.get('path').pop())
+  return incrementFinalPathItem(popped)
 }
 
 /**
