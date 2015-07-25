@@ -8,15 +8,15 @@ var Symbol = require('./Symbol')
  */
 var matchers = {
   escape: /\\/,
-  itemDelimiter: /[ \n]/,
+  itemDelimiter: /[\s\n]/,
   string: /"/,
   closeList: /;/,
   openList: /\n/,
-  indentation: / {2}/,
-  notIndentation: /[^\s]/,
+  indentation: /\s/,
   openInlineList: /:/,
   nextList: /,/,
-  number: /[+-]?\.?\d+\.?\d*/
+  number: /[+-]?\.?\d+\.?\d*/,
+  blankLine: /^\s*$/
 }
 
 /**
@@ -30,6 +30,7 @@ function read (source) {
   var state = Immutable.fromJS({
     result: [],
     source: source.split(''),
+    indentationDepth: 0,
     path: [0]
   })
 
@@ -39,7 +40,7 @@ function read (source) {
     if (head.match(matchers.string)) {
       state = shift(readUntil(shift(state), matchers.string))
     } else if (head.match(matchers.openList)) {
-      state = incrementFinalPathItem(shift(state))
+      state = updatePathUsingIndentation(shift(state))
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
@@ -57,13 +58,56 @@ function read (source) {
 }
 
 /**
+ * Determines what the new path should be using the current leading
+ * indentation. If it's the same as the path then we just increment it. If it's
+ * deeper than the path we add another level. If it's less than the path we go
+ * up a level and increment it.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function updatePathUsingIndentation (state) {
+  if (isBlankLine(state)) {
+    return state
+  }
+
+  var previousDepth = state.get('indentationDepth')
+  var nextDepth = state.get('source').takeWhile(function (char) {
+    return char.match(matchers.indentation) !== null
+  }).size
+
+  state = state.set('indentationDepth', nextDepth)
+
+  if (previousDepth === nextDepth) {
+    return incrementFinalPathItem(state)
+  } else if (previousDepth < nextDepth) {
+    return state.set('path', state.get('path').push(1))
+  } else if (previousDepth > nextDepth) {
+    var popped = state.set('path', state.get('path').pop())
+    return incrementFinalPathItem(popped)
+  }
+}
+
+/**
+ * Checks if we're currently on a blank line. Good for bailing early.
+ *
+ * @param {Immutable.Map} state
+ * @return {Boolean}
+ */
+function isBlankLine (state) {
+  return state.get('source').takeUntil(function (char) {
+    return char === '\n'
+  }).join('').match(matchers.blankLine) !== null
+}
+
+/**
  * Used to create a sibling list.
  *
  * @param {Immutable.Map} state
  * @return {Immutable.Map}
  */
 function incrementFinalPathItem (state) {
-  var lastItem = ['path', -1]
+  var lastItem = Immutable.List(['path', -1])
   var index = state.getIn(lastItem) + 1
   return state.setIn(lastItem, index)
 }
@@ -92,7 +136,7 @@ function readUntil (state, matcher, mapper) {
   var result
   var accumulator = Immutable.List()
   var source = state.get('source')
-  var path = ['result'].concat(state.get('path').toJS())
+  var path = state.get('path').unshift('result')
 
   function shouldContinue () {
     head = source.first()
@@ -115,11 +159,10 @@ function readUntil (state, matcher, mapper) {
     result = mapper(result)
   }
 
-  return state.withMutations(function (state) {
-    state.set('source', source)
-    var current = state.getIn(path) || Immutable.List()
-    state.setIn(path, current.push(result))
-  })
+  state = state.set('source', source)
+
+  var currentList = state.getIn(path) || Immutable.List()
+  return state.setIn(path, currentList.push(result))
 }
 
 module.exports = read

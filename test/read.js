@@ -70,3 +70,21 @@ test('new line creates a new list', function (t) {
     [symbol('bar'), 20]
   ], 'two lists each with two values')
 })
+
+test('new line and indentation creates a nested list', function (t) {
+  t.plan(1)
+  var out = readFirst('a\n  b')
+  t.deepEqual(out, [symbol('a'), [symbol('b')]], 'a list with a nested list and a value')
+})
+
+test('new line and less indentation closes the list', function (t) {
+  t.plan(1)
+  var out = read('a\n b\nc')
+  t.deepEqual(out, [[symbol('a'), [symbol('b')]], [symbol('c')]], 'a has b as a child list, c is a sibling of a')
+})
+
+test('a series of blank lines does not create empty lists', function (t) {
+  t.plan(1)
+  var out = read('a\n\n   \n \nb')
+  t.deepEqual(out, [[symbol('a')], [symbol('b')]], 'a and b lists are siblings still')
+})

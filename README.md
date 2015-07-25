@@ -37,7 +37,7 @@ impl < fib.impl | node
 
 ## Syntax
 
-The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (currently defined as two spaces).
+The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (you can use any indentation, but I recommend two spaces).
 
 There are four special characters that allow you override the implicit lists where it makes sense so you don't have to rely on new lines and indentation in every situation.
 
