@@ -72,9 +72,12 @@ test('new line creates a new list', function (t) {
 })
 
 test('new line and indentation creates a nested list', function (t) {
-  t.plan(1)
+  t.plan(2)
   var out = readFirst('a\n  b')
   t.deepEqual(out, [s('a'), [s('b')]], 'a list with a nested list and a value')
+
+  out = readFirst('a 1\n  b 2')
+  t.deepEqual(out, [s('a'), 1, [s('b'), 2]], 'a list with a nested list and a value')
 })
 
 test('new line and less indentation closes the list', function (t) {

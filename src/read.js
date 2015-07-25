@@ -81,7 +81,9 @@ function updatePathUsingIndentation (state) {
   if (previousDepth === nextDepth) {
     return incrementFinalPathItem(state)
   } else if (previousDepth < nextDepth) {
-    return state.set('path', state.get('path').push(1))
+    var path = state.get('path')
+    var nextSegment = state.getIn(path.unshift('result')).size
+    return state.set('path', state.get('path').push(nextSegment))
   } else if (previousDepth > nextDepth) {
     var popped = state.set('path', state.get('path').pop())
     return incrementFinalPathItem(popped)
