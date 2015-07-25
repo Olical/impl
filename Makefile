@@ -7,4 +7,4 @@ test:
 	@npm test
 
 test-watch:
-	@./node_modules/.bin/nodemon --exec "npm test"
+	@./node_modules/.bin/nodemon --ext "js,impl" --exec "npm test"
