@@ -9,7 +9,7 @@ function readFirst (src) {
   return read(src)[0]
 }
 
-function symbol (value) {
+function s (value) {
   return new impl.Symbol(value)
 }
 
@@ -34,7 +34,7 @@ test('escaping a quote inside a string', function (t) {
 test('reading a symbol', function (t) {
   t.plan(1)
   var out = readFirst('test')
-  t.deepEqual(out, [symbol('test')], 'just the symbol test')
+  t.deepEqual(out, [s('test')], 'just the symbol test')
 })
 
 test('reading numbers', function (t) {
@@ -47,44 +47,44 @@ test('reading numbers', function (t) {
 test('reading symbols and numbers', function (t) {
   t.plan(1)
   var out = readFirst('+ 1.0 -20 6')
-  t.deepEqual(out, [symbol('+'), 1.0, -20, 6], '"+" symbol with various numbers')
+  t.deepEqual(out, [s('+'), 1.0, -20, 6], '"+" symbol with various numbers')
 })
 
 test('reading symbol and string', function (t) {
   t.plan(1)
   var out = readFirst('split "Hello, World!"')
-  t.deepEqual(out, [symbol('split'), 'Hello, World!'], '"split" symbol with a string')
+  t.deepEqual(out, [s('split'), 'Hello, World!'], '"split" symbol with a string')
 })
 
 test('new line closes a symbol', function (t) {
   t.plan(1)
   var out = readFirst('new-line?\n')
-  t.deepEqual(out, [symbol('new-line?')], 'symbol, no new line')
+  t.deepEqual(out, [s('new-line?')], 'symbol, no new line')
 })
 
 test('new line creates a new list', function (t) {
   t.plan(1)
   var out = read('foo 10\nbar 20')
   t.deepEqual(out, [
-    [symbol('foo'), 10],
-    [symbol('bar'), 20]
+    [s('foo'), 10],
+    [s('bar'), 20]
   ], 'two lists each with two values')
 })
 
 test('new line and indentation creates a nested list', function (t) {
   t.plan(1)
   var out = readFirst('a\n  b')
-  t.deepEqual(out, [symbol('a'), [symbol('b')]], 'a list with a nested list and a value')
+  t.deepEqual(out, [s('a'), [s('b')]], 'a list with a nested list and a value')
 })
 
 test('new line and less indentation closes the list', function (t) {
   t.plan(1)
   var out = read('a\n b\nc')
-  t.deepEqual(out, [[symbol('a'), [symbol('b')]], [symbol('c')]], 'a has b as a child list, c is a sibling of a')
+  t.deepEqual(out, [[s('a'), [s('b')]], [s('c')]], 'a has b as a child list, c is a sibling of a')
 })
 
 test('a series of blank lines does not create empty lists', function (t) {
   t.plan(1)
   var out = read('a\n\n   \n \nb')
-  t.deepEqual(out, [[symbol('a')], [symbol('b')]], 'a and b lists are siblings still')
+  t.deepEqual(out, [[s('a')], [s('b')]], 'a and b lists are siblings still')
 })
