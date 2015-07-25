@@ -1,0 +1,6 @@
+if
+  some-fn "arg for some-fn"
+  val 10
+  +
+    fn-a
+    fn-b
