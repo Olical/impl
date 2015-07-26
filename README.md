@@ -2,24 +2,11 @@
 
 Homoiconic language with minimal syntax compiling to JavaScript.
 
-This is essentially a toy language that's supposed to be an exercise in language design. It's inspired by Clojure among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
+This is essentially a toy language that's supposed to be an exercise in language design. It's inspired by [Clojure][] among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
+
+Some day I hope to make this language self hosting with a compiler written in Impl. I'd also like to create a [React][] wrapper and attempt some web development with it.
 
 ## Getting started
-
-### If you're working on Impl
-
-```bash
-# Fetch the dependencies.
-make bootstrap
-
-# Run the tests.
-make test
-
-# Or run the tests continually.
-make test-watch
-```
-
-### If you're using Impl
 
 ```bash
 # Install the package globally.
@@ -35,9 +22,22 @@ node fib.js
 impl < fib.impl | node
 ```
 
+### If you're working on Impl
+
+```bash
+# Fetch the dependencies. (or npm install)
+make bootstrap
+
+# Run the tests. (runs standard linting and tape)
+make test
+
+# Or run the tests continually.
+make test-watch
+```
+
 ## Syntax
 
-The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (you can use any indentation, but I recommend two spaces).
+The syntax is essentially a Lisp with implied parenthesis based on new lines and indentation levels. Each line is a new list which is a child of the list at the previous level of indentation. Reducing the indentation level closes the lists. You can create a tree of lists by continually creating new lines and further levels of indentation (indentation is defined as two spaces).
 
 There are four special characters that allow you override the implicit lists where it makes sense so you don't have to rely on new lines and indentation in every situation.
 
@@ -109,3 +109,5 @@ Do what you want. Learn as much as you can. Unlicense more software.
 [author-twitter]: https://twitter.com/OliverCaldwell
 [immutablejs]: https://github.com/facebook/immutable-js
 [vim-impl]: https://github.com/Olical/vim-impl
+[clojure]: http://clojure.org/
+[react]: http://facebook.github.io/react/
