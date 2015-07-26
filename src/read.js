@@ -8,7 +8,7 @@ var Symbol = require('./Symbol')
  */
 var matchers = {
   escape: /\\/,
-  itemDelimiter: /[\s\n]/,
+  itemDelimiter: /[,;:\s\n]/,
   string: /"/,
   closeList: /;/,
   openList: /\n/,
@@ -41,6 +41,8 @@ function read (source) {
       state = shift(readUntil(shift(state), matchers.string))
     } else if (head.match(matchers.openList)) {
       state = updatePathUsingIndentation(shift(state))
+    } else if (head.match(matchers.closeList)) {
+      state = incrementFinalPathItem(shift(state))
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
