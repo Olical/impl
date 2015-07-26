@@ -42,7 +42,9 @@ function read (source) {
     } else if (head.match(matchers.openList)) {
       state = updatePathUsingIndentation(shift(state))
     } else if (head.match(matchers.closeList)) {
-      state = incrementFinalPathItem(shift(state))
+      state = popPathSegement(shift(state))
+    } else if (head.match(matchers.nextList)) {
+      state = incrementFinalPathItem(state)
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
@@ -87,7 +89,7 @@ function updatePathUsingIndentation (state) {
     })
   } else if (previousDepth > nextDepth) {
     executeDelta(previousDepth, nextDepth, function () {
-      state = popPathSegement(state)
+      state = incrementFinalPathItem(popPathSegement(state))
     })
   }
 
@@ -172,8 +174,7 @@ function insertChildPathSegement (state) {
  * @return {Immutable.Map}
  */
 function popPathSegement (state) {
-  var popped = state.set('path', state.get('path').pop())
-  return incrementFinalPathItem(popped)
+  return state.set('path', state.get('path').pop())
 }
 
 /**

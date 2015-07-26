@@ -95,5 +95,11 @@ test('a series of blank lines does not create empty lists', function (t) {
 test('semi-colon closes a list', function (t) {
   t.plan(1)
   var out = read('a\n  b; c')
-  t.deepEqual(out, [[s('a'), [s('b')], [s('c')]]], 'b is inside a, but c is a sibling of the b list')
+  t.deepEqual(out, [[s('a'), [s('b')], s('c')]], 'b is inside a, but c is a sibling of the b list')
+})
+
+test('comma closes a list and opens a new one', function (t) {
+  t.plan(1)
+  var out = read('a\n  b, c')
+  t.deepEqual(out, [[s('a'), [s('b')], [s('c')]]], '')
 })
