@@ -44,7 +44,7 @@ function read (source) {
     } else if (head.match(matchers.closeList)) {
       state = popPathSegement(shift(state))
     } else if (head.match(matchers.nextList)) {
-      state = incrementFinalPathItem(state)
+      state = incrementFinalPathItem(shift(state))
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
