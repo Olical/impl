@@ -1,0 +1,6 @@
+fn short-names: people
+  filter
+    map people
+      fn: person, get person "name"
+    fn: name
+      <: len name, val 10

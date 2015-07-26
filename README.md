@@ -73,7 +73,7 @@ fn short-names: people
     map people
       fn: person, get person "name"
     fn: name
-      <: len name, 10
+      <: len name, val 10
 ```
 
 All lists are executed like Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
