@@ -31,6 +31,7 @@ function read (source) {
     result: [],
     source: source.split(''),
     indentationDepth: 0,
+    inLineDepth: 0,
     path: [0]
   })
 
@@ -40,11 +41,17 @@ function read (source) {
     if (head.match(matchers.string)) {
       state = shift(readUntil(shift(state), matchers.string))
     } else if (head.match(matchers.openList)) {
+      executeDelta(0, state.get('inLineDepth'), function () {
+        state = popPathSegement(state)
+      })
+      state = state.set('inLineDepth', 0)
       state = updatePathUsingIndentation(shift(state))
     } else if (head.match(matchers.closeList)) {
       state = popPathSegement(shift(state))
     } else if (head.match(matchers.nextList)) {
       state = incrementFinalPathItem(shift(state))
+    } else if (head.match(matchers.openInlineList)) {
+      state = pushInLineList(shift(state))
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
@@ -94,6 +101,18 @@ function updatePathUsingIndentation (state) {
   }
 
   return state
+}
+
+/**
+ * Pushes a new in line list onto the path. Increments the in line counter so
+ * they can all be closed at the next new line.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function pushInLineList (state) {
+  var inLineDepth = state.get('inLineDepth') + 1
+  return insertChildPathSegement(state).set('inLineDepth', inLineDepth)
 }
 
 /**

@@ -101,5 +101,23 @@ test('semi-colon closes a list', function (t) {
 test('comma closes a list and opens a new one', function (t) {
   t.plan(1)
   var out = read('a\n  b, c')
-  t.deepEqual(out, [[s('a'), [s('b')], [s('c')]]], '')
+  t.deepEqual(out, [[s('a'), [s('b')], [s('c')]]], 'a, list of b, c')
+})
+
+test('colon opens a new list until the end of the line', function (t) {
+  t.plan(1)
+  var out = read('a\n  b: c\n  d')
+  t.deepEqual(out, [[s('a'), [s('b'), [s('c')]], [s('d')]]], 'b is inside a, it has c and d lists as children')
+})
+
+test('multiple inline lists are closed at the end of the line', function (t) {
+  t.plan(1)
+  var out = read('a: b: c: d\ntop?')
+  t.deepEqual(out, [[s('a'), [s('b'), [s('c'), [s('d')]]]], [s('top?')]], 'all inline lists were closed by the new line')
+})
+
+test('inline lists do not interfere with other lines', function (t) {
+  t.plan(1)
+  var out = read('a: b\nc: d\ne: f')
+  t.deepEqual(out, [[s('a'), [s('b')]], [s('c'), [s('d')]], [s('e'), [s('f')]]], 'used three inlines, all closed correctly')
 })
