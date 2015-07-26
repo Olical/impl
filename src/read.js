@@ -184,8 +184,30 @@ function readUntil (state, matcher, mapper) {
 
   state = state.set('source', source)
 
-  var currentList = state.getIn(path) || Immutable.List()
+  state = ensurePath(state, path)
+  var currentList = state.getIn(path)
   return state.setIn(path, currentList.push(result))
+}
+
+/**
+ * Fills in gaps in the given path to allow deep creation of lists.
+ *
+ * @param {Immutable.Map} state
+ * @param {Immutable.List}
+ * @return {Immutable.Map}
+ */
+function ensurePath (state, path) {
+  var subset
+
+  for (var i = 0; i < path.size; i++) {
+    subset = path.take(i + 1)
+
+    if (!state.hasIn(subset)) {
+      state = state.setIn(subset, Immutable.List())
+    }
+  }
+
+  return state
 }
 
 module.exports = read
