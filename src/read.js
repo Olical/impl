@@ -12,7 +12,7 @@ var matchers = {
   string: /"/,
   closeList: /;/,
   openList: /\n/,
-  indentation: /\s/,
+  indentation: / /,
   openInlineList: /:/,
   nextList: /,/,
   number: /[+-]?\.?\d+\.?\d*/,
@@ -72,19 +72,58 @@ function updatePathUsingIndentation (state) {
   }
 
   var previousDepth = state.get('indentationDepth')
-  var nextDepth = state.get('source').takeWhile(function (char) {
-    return char.match(matchers.indentation) !== null
-  }).size
+  state = readIndentation(state)
+  var nextDepth = state.get('indentationDepth')
 
   state = state.set('indentationDepth', nextDepth)
 
   if (previousDepth === nextDepth) {
-    return incrementFinalPathItem(state)
+    state = incrementFinalPathItem(state)
   } else if (previousDepth < nextDepth) {
-    return insertChildPathSegement(state)
+    executeDelta(previousDepth, nextDepth, function () {
+      state = insertChildPathSegement(state)
+    })
   } else if (previousDepth > nextDepth) {
-    return popPathSegement(state)
+    executeDelta(previousDepth, nextDepth, function () {
+      state = popPathSegement(state)
+    })
   }
+
+  return state
+}
+
+/**
+ * Executes the given function n times where n is the delta between a and b.
+ *
+ * @param {Number} a
+ * @param {Number} b
+ * @param {Function} fn
+ */
+function executeDelta (a, b, fn) {
+  var delta = Math.abs(a - b)
+
+  while (delta--) {
+    fn()
+  }
+}
+
+/**
+ * Reads the current levels of indentation at the start of the source and
+ * places the result in indentationDepth.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function readIndentation (state) {
+  var indentationCount = 2
+  var isIndentation = function (char) {
+    return char.match(matchers.indentation) !== null
+  }
+  var indentation = state.get('source').takeWhile(isIndentation)
+  var depth = Math.floor(indentation.size / indentationCount)
+  return state
+    .set('source', state.get('source').skipWhile(isIndentation))
+    .set('indentationDepth', depth)
 }
 
 /**

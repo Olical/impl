@@ -82,12 +82,12 @@ test('new line and indentation creates a nested list', function (t) {
 
 test('new line and less indentation closes the list', function (t) {
   t.plan(1)
-  var out = read('a\n b\nc')
+  var out = read('a\n  b\nc')
   t.deepEqual(out, [[s('a'), [s('b')]], [s('c')]], 'a has b as a child list, c is a sibling of a')
 })
 
 test('a series of blank lines does not create empty lists', function (t) {
   t.plan(1)
-  var out = read('a\n\n   \n \nb')
+  var out = read('a\n\n  \n \nb')
   t.deepEqual(out, [[s('a')], [s('b')]], 'a and b lists are siblings still')
 })

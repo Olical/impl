@@ -48,7 +48,7 @@ test('fib function', function (t) {
   ], 'a fib function')
 })
 
-test.skip('short-names function', function (t) {
+test('short-names function', function (t) {
   t.plan(1)
   var out = read('short-names')
   t.deepEqual(out, [
