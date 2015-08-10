@@ -1,6 +1,6 @@
 {
-  "name": "impl",
-  "version": "1.0.0",
+  "name": "impl-lang",
+  "version": "0.0.0",
   "description": "Homoiconic language with minimal syntax compiling to JavaScript",
   "main": "src/index.js",
   "scripts": {

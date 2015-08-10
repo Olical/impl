@@ -1,8 +1,8 @@
-# Impl [![Build Status](https://travis-ci.org/Olical/impl.svg?branch=master)](https://travis-ci.org/Olical/impl) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Olical/impl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+# Impl [![npm version](https://badge.fury.io/js/impl-lang.svg)](http://badge.fury.io/js/impl-lang) [![Build Status](https://travis-ci.org/Olical/impl.svg?branch=master)](https://travis-ci.org/Olical/impl) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Olical/impl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Homoiconic language with minimal syntax compiling to JavaScript.
 
-This is essentially a toy language that's supposed to be an exercise in language design. It's inspired by [Clojure][] among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
+This is essentially a toy language that's supposed to be an exercise in simple parser / compiler / language design. It's inspired by [Clojure][] among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
 
 Some day I hope to make this language self hosting with a compiler written in Impl. I'd also like to create a [React][] wrapper and attempt some web development with it.
 
@@ -10,10 +10,10 @@ Some day I hope to make this language self hosting with a compiler written in Im
 
 ```bash
 # Install the package globally.
-npm install -g impl
+npm install -g impl-lang
 
 # Pipe an Impl file through the compiler.
-impl < fib.impl > fib.js
+impl < samples/fib.impl > fib.js
 
 # Execute the compiled JavaScript!
 node fib.js
@@ -28,7 +28,7 @@ impl < fib.impl | node
 # Fetch the dependencies. (or npm install)
 make bootstrap
 
-# Run the tests. (runs standard linting and tape)
+# Run the tests. (runs standard linting and tape tests)
 make test
 
 # Or run the tests continually.
@@ -47,6 +47,17 @@ There are four special characters that allow you override the implicit lists whe
  * `\` - Escape the next character, even if it's a new line or one of the previous special characters. This causes the reader to skip the next character no matter what.
 
 When writing an `if` that makes a call to a function, for example, you can use these special characters to make it a little more concise.
+
+```impl
+if
+  some-fn "arg for some-fn"
+    val 10
+    +
+      fn-a
+      fn-b
+```
+
+Becomes...
 
 ```impl
 if: some-fn "arg for some-fn"
@@ -80,7 +91,7 @@ All lists are executed like Lisp, the first item is presumed to be a function. Y
 
 ## Integration
 
-I've created [vim-impl][] to provide some default buffer local settings and syntax detection / highlighting.
+I've created [vim-impl][] to provide some default buffer local settings, syntax detection and highlighting.
 
 ## Author
 
