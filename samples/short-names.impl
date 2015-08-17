@@ -9,4 +9,4 @@ fn short-names
       name
       <
         len name
-        val 10
+        ; 10

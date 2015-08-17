@@ -51,7 +51,7 @@ When writing an `if` that makes a call to a function, for example, you can use t
 ```impl
 if
   some-fn "arg for some-fn"
-    val 10
+    ; 10
     +
       fn-a
       fn-b
@@ -61,16 +61,16 @@ Becomes...
 
 ```impl
 if: some-fn "arg for some-fn"
-  val 10
+  ; 10
   +: fn-a, fn-b
 ```
 
-`val` is used to create a function which returns it's first argument. This allows you to return actual values as leaf nodes of the list tree. Here's a Fibonacci function as another example.
+`;` is used to close the list created by the new line, so it becomes just the value 10, which will not be executed. This allows you to return actual values as leaf nodes of the list tree. Here's a Fibonacci function as another example.
 
 ```impl
 fn fib: n
   if: < n 2
-    val 1
+    ; 1
     +
       fib: - n 2
       fib: - n 1
@@ -84,10 +84,10 @@ fn short-names: people
     map people
       fn: person, get person "name"
     fn: name
-      <: len name, val 10
+      <: len name; 10
 ```
 
-All lists are executed like Lisp, the first item is presumed to be a function. You must use `val` to return single values and `list` to return a list without executing it.
+All lists are executed like Lisp, the first item is presumed to be a function. You must use `;` to return single values.
 
 ## Integration
 

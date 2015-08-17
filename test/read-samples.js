@@ -17,7 +17,7 @@ test('if statement', function (t) {
   t.deepEqual(out, [
     [s('if'),
       [s('some-fn'), 'arg for some-fn'],
-      [s('val'), 10],
+      10,
       [s('+'),
         [s('fn-a')],
         [s('fn-b')]
@@ -34,7 +34,7 @@ test('fib function', function (t) {
       [s('n')],
       [s('if'),
         [s('<'), s('n'), 2],
-        [s('val'), 1],
+        1,
         [s('+'),
           [s('fib'),
             [s('-'), s('n'), 2]
@@ -65,7 +65,7 @@ test('short-names function', function (t) {
           [s('name')],
           [s('<'),
             [s('len'), s('name')],
-            [s('val'), 10]
+            10
           ]
         ]
       ]

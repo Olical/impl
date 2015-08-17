@@ -3,4 +3,4 @@ fn short-names: people
     map people
       fn: person, get person "name"
     fn: name
-      <: len name, val 10
+      <: len name; 10
