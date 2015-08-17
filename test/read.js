@@ -133,3 +133,9 @@ test('inline lists do not interfere with other lines', function (t) {
   var out = read('a: b\nc: d\ne: f')
   t.deepEqual(out, [[s('a'), [s('b')]], [s('c'), [s('d')]], [s('e'), [s('f')]]], 'used three inlines, all closed correctly')
 })
+
+test('trailing whitespace', function (t) {
+  t.plan(1)
+  var out = read('a    b      \n  c    ')
+  t.deepEqual(out, [[s('a'), s('b'), [s('c')]]], 'trailing white space did not kill the cat')
+})
