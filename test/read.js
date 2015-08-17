@@ -50,6 +50,14 @@ test('reading symbols and numbers', function (t) {
   t.deepEqual(out, [s('+'), 1.0, -20, 6], '"+" symbol with various numbers')
 })
 
+test('reading a symbol with a number insize', function (t) {
+  t.plan(4)
+  t.deepEqual(readFirst('test10'), [s('test10')], 'symbol')
+  t.deepEqual(readFirst('10test'), [s('10test')], 'symbol')
+  t.deepEqual(readFirst('-10-test'), [s('-10-test')], 'symbol')
+  t.deepEqual(readFirst('test-10-'), [s('test-10-')], 'symbol')
+})
+
 test('reading symbol and string', function (t) {
   t.plan(1)
   var out = readFirst('split "Hello, World!"')

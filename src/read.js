@@ -15,7 +15,7 @@ var matchers = {
   indentation: / /,
   openInlineList: /:/,
   nextList: /,/,
-  number: /[+-]?\.?\d+\.?\d*/,
+  number: /^[+-]?\.?\d+\.?\d*$/,
   blankLine: /^\s*$/,
   comment: /#/
 }
