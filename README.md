@@ -1,5 +1,7 @@
 # Impl [![npm version](https://badge.fury.io/js/impl-lang.svg)](http://badge.fury.io/js/impl-lang) [![Build Status](https://travis-ci.org/Olical/impl.svg?branch=master)](https://travis-ci.org/Olical/impl) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Olical/impl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+> This is a work in progress, the npm CLI will simply parse an Impl file and give you the JavaScript data structure right now. JavaScript code generation is obviously up next, but the reader works really well so far.
+
 Homoiconic language with minimal syntax compiling to JavaScript.
 
 This is essentially a toy language that's supposed to be an exercise in simple parser / compiler / language design. It's inspired by [Clojure][] among other Lisps. The immutable persistent data structures are provided by the excellent [ImmutableJS][].
