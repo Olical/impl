@@ -107,7 +107,7 @@ test('semi-colon on a new line closes the new list, but the next line stays nest
 test('semi-colon on a new line closes with multiple children', function (t) {
   t.plan(1)
   var out = read('a\n  ;b c d\n  e')
-  t.deepEqual(out, [[s('a'), s('b'), s('c'), s('d'), [s('e')]]], '')
+  t.deepEqual(out, [[s('a'), s('b'), s('c'), s('d'), [s('e')]]], 'list was closed correctly')
 })
 
 test('comma closes a list and opens a new one', function (t) {
@@ -138,4 +138,16 @@ test('trailing whitespace', function (t) {
   t.plan(1)
   var out = read('a    b      \n  c    ')
   t.deepEqual(out, [[s('a'), s('b'), [s('c')]]], 'trailing white space did not kill the cat')
+})
+
+test('comments skip to the end of the line', function (t) {
+  t.plan(1)
+  var out = read('a # lol\n  ;b# c d\n  e')
+  t.deepEqual(out, [[s('a'), s('b'), [s('e')]]], 'comments were ignored')
+})
+
+test('escaping a comment', function (t) {
+  t.plan(1)
+  var out = read('a \\# lol\n  b')
+  t.deepEqual(out, [[s('a'), s('#'), s('lol'), [s('b')]]], 'comment was escaped')
 })

@@ -91,6 +91,9 @@ fn short-names: people
 
 All lists are executed like Lisp, the first item is presumed to be a function. You must use `;` to return single values.
 
+
+Also, I lied, there's a fifth character, `#`. As you may have guessed, this is a comment, it skips the rest of the line and moves onto the next. You can also escape it if you so wish.
+
 ## Integration
 
 I've created [vim-impl][] to provide some default buffer local settings, syntax detection and highlighting.

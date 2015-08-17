@@ -8,7 +8,7 @@ var Symbol = require('./Symbol')
  */
 var matchers = {
   escape: /\\/,
-  itemDelimiter: /[,;:\s\n]/,
+  itemDelimiter: /[,;:\s\n#]/,
   string: /"/,
   closeList: /;/,
   openList: /\n/,
@@ -16,7 +16,8 @@ var matchers = {
   openInlineList: /:/,
   nextList: /,/,
   number: /[+-]?\.?\d+\.?\d*/,
-  blankLine: /^\s*$/
+  blankLine: /^\s*$/,
+  comment: /#/
 }
 
 /**
@@ -53,6 +54,8 @@ function read (source) {
       state = incrementFinalPathItem(shift(state))
     } else if (head.match(matchers.openInlineList)) {
       state = pushInLineList(shift(state))
+    } else if (head.match(matchers.comment)) {
+      state = ignoreRestOfLine(state)
     } else if (head.match(matchers.itemDelimiter)) {
       state = shift(state)
     } else {
@@ -114,6 +117,20 @@ function updatePathUsingIndentation (state) {
 function pushInLineList (state) {
   var inLineDepth = state.get('inLineDepth') + 1
   return insertChildPathSegement(state).set('inLineDepth', inLineDepth)
+}
+
+/**
+ * Ignores the rest of the line, used for comments.
+ *
+ * @param {Immutable.Map} state
+ * @return {Immutable.Map}
+ */
+function ignoreRestOfLine (state) {
+  var dropped = state.get('source').skipUntil(function (char) {
+    return char.match(matchers.openList)
+  })
+
+  return state.set('source', dropped)
 }
 
 /**
