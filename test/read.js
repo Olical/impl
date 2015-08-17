@@ -98,6 +98,18 @@ test('semi-colon closes a list', function (t) {
   t.deepEqual(out, [[s('a'), [s('b')], s('c')]], 'b is inside a, but c is a sibling of the b list')
 })
 
+test('semi-colon on a new line closes the new list, but the next line stays nested', function (t) {
+  t.plan(1)
+  var out = read('a\n  ;b\n  c')
+  t.deepEqual(out, [[s('a'), s('b'), [s('c')]]], 'b is on a new line, but still just a symbol, c is in a list')
+})
+
+test('semi-colon on a new line closes with multiple children', function (t) {
+  t.plan(1)
+  var out = read('a\n  ;b c d\n  e')
+  t.deepEqual(out, [[s('a'), s('b'), s('c'), s('d'), [s('e')]]], '')
+})
+
 test('comma closes a list and opens a new one', function (t) {
   t.plan(1)
   var out = read('a\n  b, c')

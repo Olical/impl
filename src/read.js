@@ -48,6 +48,7 @@ function read (source) {
       state = updatePathUsingIndentation(shift(state))
     } else if (head.match(matchers.closeList)) {
       state = popPathSegement(shift(state))
+      state = state.set('indentationDepth', state.get('indentationDepth') - 1)
     } else if (head.match(matchers.nextList)) {
       state = incrementFinalPathItem(shift(state))
     } else if (head.match(matchers.openInlineList)) {
